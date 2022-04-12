@@ -51,6 +51,6 @@ function writeGlobalMsg(response) {
         <span class="user-context">oionome</span>
         <span>para</span>
         <span class="user-context">oiofulano:</span>
-        <span class="msg-data">oianude</span>
+        <span class="msg-data">oiatrova</span>
     </div>`
 }

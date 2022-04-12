@@ -7,6 +7,10 @@ body {
     position: relative;
 }
 
+main {
+    position: absolute;
+}
+
 span {
     display: flex;
 }
@@ -25,6 +29,7 @@ span {
     font-size: 40px;
     box-shadow: 4px 0 8px 4px lightgray;
     box-sizing: border-box;
+    z-index: 1;
 }
 
 .intro-screen {
@@ -35,7 +40,7 @@ span {
     height: 100vh;
     width: 100%;
     background-color: white;
-    position: absolute;
+    position: fixed;
     top: 0;
     font-size: 28px;
     box-sizing: border-box;
@@ -73,17 +78,25 @@ span {
     font-size: 20px;
 }
 
+.message-area {
+    display: flex;
+    flex-direction: column-reverse;
+    position: relative;
+    /* height: 100vh; */
+    width: 100%;
+    margin: 80px 0;
+    box-sizing: border-box;
+    overflow-y: scroll;
+}
+
 .messages {
     display: flex;
+    flex: 0 0 auto;
     flex-wrap: wrap;
     font-size: 18px;
     padding: 8px;
     margin: 3px 0;
     height: 60px;
-}
-
-.sent {
-
 }
 
 .system {
@@ -107,43 +120,44 @@ span {
 }
 
 .side-menu {
-    position: relative;
-    font-weight: bold;
+    position: fixed;
     display: flex;
     flex-direction: column;
+    font-weight: bold;
     align-items: center;
     text-align: center;
+    right: 0;
+    top: 0;
     max-width: 60%;
     margin-left: 40%;
     height: 100vh;
     background-color: white;
-    font-size: 18px;
-    box-shadow: -250px 0 25px 250px rgba(30, 30, 30, 0.9);
+    font-size: 16px;
+    box-shadow: 0 0 25px 100vw rgba(30, 30, 30, 0.9);
     z-index: 1;
 }
 
 .side-menu h3 {
-    padding: 4px 15px;
+    padding: 12px 15px;
 }
 
-
 .side-menu ul {
+    display: flex;
+    flex-direction: column;
     width: 100%;
 }
 
 .side-menu li {
-    padding: 2px 15px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    padding: 4px 15px;
     text-align: left;
 }
 
-.message-area {
-    display: flex;
-    flex-direction: column-reverse;
-    height: 100vh;
-    width: 100%;
-    margin: 85px 0;
-    box-sizing: border-box;
-    overflow-y: scroll;
+.side-menu ion-icon {
+    font-size: 28px;
+    text-align: center;
 }
 
 .bottom {
@@ -152,13 +166,14 @@ span {
     align-items: center;
     position: fixed;
     background-color: white;
+    font-size: 28px;
+    box-shadow: 4px 0 8px 4px lightgray;
     height: 80px;
+    padding: 0 15px;
     bottom: 0;
     left: 0;
     width: 100%;
     box-sizing: border-box;
-    font-size: 28px;
-    box-shadow: 4px 0 8px 4px lightgray;
 }
 
 input {

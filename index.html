@@ -24,9 +24,11 @@
             <h3>Escolha um contato para mandar mensagem</h3>
             <ul class="users">
                 <li onclick="console.log('does it close?')"><ion-icon name="person-circle"></ion-icon>PLACEHOLDER</li>
+                <li onclick="console.log('does it close?')"><ion-icon name="person-circle"></ion-icon>PLACEHOLDER</li>
             </ul>
             <h3>Escolha a visibilidade</h3>
             <ul class="visibility">
+                <!-- falta a checkbox do lado direito -->
                 <li><ion-icon name="lock-closed"></ion-icon>PLACEHOLDER</li>
                 <li><ion-icon name="lock-open"></ion-icon>PLACEHOLDER</li>
             </ul>
@@ -38,7 +40,7 @@
                 <input type="text" placeholder="Escreva aqui...">
                 <h6 class="info hidden">Enviando para (reservadamente)</h6>
             </div>
-            <ion-icon onclick="console.log('send')" name="paper-plane-outline"></ion-icon>
+            <ion-icon onclick="sendMessage(this)" name="paper-plane-outline"></ion-icon>
         </div>
     </main>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
