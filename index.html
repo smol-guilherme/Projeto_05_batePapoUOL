@@ -12,10 +12,24 @@
 <body>
     <main>
         <div class="header">
-            <img src="https://emojiapi.dev/api/v1/loudly_crying_face/32.png" alt="">
-            <ion-icon onclick="console.log('hi')" name="people"></ion-icon>
+            <img onclick="closeSideMenu()" src="https://emojiapi.dev/api/v1/loudly_crying_face/32.png" alt="">
+            <ion-icon onclick="showSideMenu()" name="people"></ion-icon>
         </div>
-        <div class="side-menu hidden"></div>
+        <div class="intro-screen">
+            <img onclick="console.log('clicky')" src="https://emojiapi.dev/api/v1/loudly_crying_face/32.png" alt="">
+            <input type="text" placeholder="Digite seu nome">
+            <div onclick="hideIntro()">Entrar</div>
+        </div>
+        <div class="side-menu hidden">
+            <h3>Escolha um contato para mandar mensagem</h3>
+            <ul class="users">
+                <li onclick="console.log('does it close?')">PLACEHOLDER</li>
+            </ul>
+            <h3>Escolha a visibilidade</h3>
+            <ul class="visibility">
+                <li>PLACEHOLDER</li>
+            </ul>
+        </div>
         <div class="message-area"></div>
         <div class="bottom">
             <div>
