@@ -23,18 +23,20 @@
         <div class="side-menu hidden">
             <h3>Escolha um contato para mandar mensagem</h3>
             <ul class="users">
-                <li onclick="console.log('does it close?')">PLACEHOLDER</li>
+                <li onclick="console.log('does it close?')"><ion-icon name="person-circle"></ion-icon>PLACEHOLDER</li>
             </ul>
             <h3>Escolha a visibilidade</h3>
             <ul class="visibility">
-                <li>PLACEHOLDER</li>
+                <li><ion-icon name="lock-closed"></ion-icon>PLACEHOLDER</li>
+                <li><ion-icon name="lock-open"></ion-icon>PLACEHOLDER</li>
             </ul>
         </div>
-        <div class="message-area"></div>
+        <div class="message-area">
+        </div>
         <div class="bottom">
             <div>
                 <input type="text" placeholder="Escreva aqui...">
-                <h6 class=" info">Enviando para (reservadamente)</h6>
+                <h6 class="info hidden">Enviando para (reservadamente)</h6>
             </div>
             <ion-icon onclick="console.log('send')" name="paper-plane-outline"></ion-icon>
         </div>
