@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body {
+    font-size: 24px;
+    background-color: #f3f3f3;
+    font-family: 'Roboto', sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    background-color: white;
+    height: 80px;
+    padding: 0 15px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 40px;
+    box-shadow: 4px 0 8px 4px lightgray;
+}
+
+.messages {
+
+}
+
+.sent {
+
+}
+
+.received {
+    background-color: white;
+}
+
+.system {
+    color: #aaaaaa;
+    background-color: #dcdcdc;
+}
+
+.private {
+    background-color: #ffdede;
+}
+
+.bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    background-color: white;
+    height: 80px;
+    padding: 0 15px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 28px;
+    box-shadow: 4px 0 8px 4px lightgray;
+}
+
+.bottom input {
+    border: none;
+    font-size: 20px;
+}
+
+.bottom > div * {
+    padding: 6px 0;
+}
+
+.bottom input::placeholder {
+    color: black;
+    font-style: italic;
+}
+
+.hidden {
+    display: none;
+}
+
+.info {
+    color: #505050;
+    font-size: 14px;
+    font-weight: 300;
+}
