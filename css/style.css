@@ -91,6 +91,7 @@ span {
 
 .messages {
     display: flex;
+    align-items: center;
     flex: 0 0 auto;
     flex-wrap: wrap;
     font-size: 18px;
