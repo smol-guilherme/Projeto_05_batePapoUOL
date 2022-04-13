@@ -18,7 +18,7 @@
         <div class="intro-screen">
             <img onclick="console.log('clicky')" src="https://emojiapi.dev/api/v1/loudly_crying_face/32.png" alt="">
             <input type="text" placeholder="Digite seu nome">
-            <div onclick="hideIntro()">Entrar</div>
+            <div onclick="registerUser(this)">Entrar</div>
         </div>
         <div class="side-menu hidden">
             <h3>Escolha um contato para mandar mensagem</h3>
@@ -43,6 +43,7 @@
             <ion-icon onclick="sendMessage(this)" name="paper-plane-outline"></ion-icon>
         </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script src="./scripts/scripts.js"></script>
 </body>
