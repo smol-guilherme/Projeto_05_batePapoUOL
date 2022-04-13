@@ -5,6 +5,7 @@ let participantsToken = 0;
 let currentUser = {
     name: ""
 }
+let pvtUser;
 let currentParticipants = [];
 
 function closeSideMenu() {
@@ -31,14 +32,6 @@ function showIntro() {
 function writePrivateMsg(response) {
     const msgBox = document.querySelector(".message-area")
     // adicionar espaço na resposta do servidor na hora de colocar no template string
-    msgBox.innerHTML += `
-    <div class="private messages">
-        <span class="system">(oiahora)</span>
-        <span class="user-context">oionome</span>
-        <span>para</span>
-        <span class="user-context">oiofulano:</span>
-        <span class="msg-data">oianude</span>
-    </div>`
 }
 
 function writeChatMsg(msgData) {
@@ -56,6 +49,7 @@ function writeChatMsg(msgData) {
                 <span class="msg-data">${msgData.text}</span>
             </div>`
             msgBox.firstElementChild.scrollIntoView()
+            break;
         case "status":
             msgBox.innerHTML += `
             <div class="system messages">
@@ -64,9 +58,35 @@ function writeChatMsg(msgData) {
                 <span>${msgData.text}</span>
             </div>`
             msgBox.firstElementChild.scrollIntoView()
+            break;
+        case "private_message":
+            if(msgData.to === currentUser.name) {
+                msgBox.innerHTML += `
+                <div class="private messages">
+                    <span class="system">(${msgData.time})&nbsp;</span>
+                    <span class="user-context">${msgData.from}&nbsp;</span>
+                    <span>para</span>
+                    <span class="user-context">${msgData.to}:&nbsp;</span>
+                    <span class="msg-data">${msgData.text}</span>
+                </div>`
+                msgBox.firstElementChild.scrollIntoView()    
+            }
+            break;
     }        
 }
 
+function sendMessage(btn) {
+    const msgBody = {
+        from: currentUser.name,
+        to: "Todos",
+        text: btn.parentNode.querySelector("input").value,
+        type: "message"
+    }
+    const promise = axios.post(API_URL+"messages", msgBody)
+    btn.parentNode.querySelector("input").value = ""
+    promise.then(updateChat)
+    promise.catch(errorHandle)
+}
 
 function registerUser(btn) {
     const nameReq = {
@@ -103,7 +123,7 @@ function updateUsersOnline(usersList) {
 
 function userLogin() {
     hideIntro()
-    participantsToken = setInterval(usersOnline, 4000);
+    participantsToken = setInterval(usersOnline, 10000);
     loginToken = setInterval(serverHandshake, 4000);
     chatReqToken = setInterval(updateChat, 3000);
 }
