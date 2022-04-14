@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,6 +10,7 @@
     <link rel="shortcut icon" href="https://emojiapi.dev/api/v1/loudly_crying_face/32.png" type="image/x-icon">
     <title>Chat da UOH</title>
 </head>
+
 <body>
     <main>
         <div class="header">
@@ -16,21 +18,58 @@
             <ion-icon onclick="showSideMenu()" name="people"></ion-icon>
         </div>
         <div class="intro-screen">
-            <img onclick="console.log('clicky')" src="https://emojiapi.dev/api/v1/loudly_crying_face/32.png" alt="">
+            <img onclick="hideIntro()" src="https://emojiapi.dev/api/v1/loudly_crying_face/32.png" alt="">
             <input type="text" placeholder="Digite seu nome">
             <div onclick="registerUser(this)">Entrar</div>
         </div>
         <div class="side-menu hidden">
             <h3>Escolha um contato para mandar mensagem</h3>
             <ul class="users">
-                <li onclick="console.log('does it close?')"><ion-icon name="person-circle"></ion-icon>PLACEHOLDER</li>
-                <li onclick="console.log('does it close?')"><ion-icon name="person-circle"></ion-icon>PLACEHOLDER</li>
+                <li onclick="checkBox(this)">
+                    <span>
+                        <ion-icon name="person-circle"></ion-icon>
+                        Todos
+                    </span>
+                    <ion-icon class="selected" name="checkmark-outline"></ion-icon>
+                </li>
+                <li onclick="checkBox(this)">
+                    <span>
+                        <ion-icon name="person-circle"></ion-icon>
+                        Todos2
+                    </span>
+                    <ion-icon class="selected hidden" name="checkmark-outline"></ion-icon>
+                </li>
+                <li onclick="checkBox(this)">
+                    <span>
+                        <ion-icon name="person-circle"></ion-icon>
+                        Todos3
+                    </span>
+                    <ion-icon class="selected hidden" name="checkmark-outline"></ion-icon>
+                </li>
+                <li onclick="checkBox(this)">
+                    <span>
+                        <ion-icon name="person-circle"></ion-icon>
+                        Todos4
+                    </span>
+                    <ion-icon class="selected hidden" name="checkmark-outline"></ion-icon>
+                </li>
             </ul>
             <h3>Escolha a visibilidade</h3>
             <ul class="visibility">
-                <!-- falta a checkbox do lado direito -->
-                <li><ion-icon name="lock-closed"></ion-icon>PLACEHOLDER</li>
-                <li><ion-icon name="lock-open"></ion-icon>PLACEHOLDER</li>
+                <li onclick="checkBox(this)">
+                    <span>
+                        <ion-icon name="lock-open"></ion-icon>
+                        Público
+                    </span>
+                    <ion-icon class="selected" name="checkmark-outline"></ion-icon>
+                </li>
+                <li onclick="checkBox(this)">
+                    <span>
+                        <ion-icon name="lock-closed"></ion-icon>
+                        Reservadamente
+                    </span>
+                    <ion-icon class="hidden selected" name="checkmark-outline"></ion-icon>
+                </li>
             </ul>
         </div>
         <div class="message-area">
@@ -47,4 +86,5 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script src="./scripts/scripts.js"></script>
 </body>
+
 </html>
