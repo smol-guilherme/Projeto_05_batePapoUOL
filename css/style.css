@@ -157,6 +157,10 @@ input {
     display: flex;
     align-items: center;
     font-size: 14px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
 }
 
 .side-menu .users {
@@ -167,7 +171,11 @@ input {
 .side-menu li {
     justify-content: space-between;
     padding: 4px 15px;
-    text-align: left;
+    text-align: start;
+}
+
+.side-menu span {
+    /* min-width: 160px; */
 }
 
 .side-menu ion-icon {

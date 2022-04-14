@@ -6,7 +6,16 @@ let currentUser = {
     name: ""
 }
 let targetUser = "Todos";
+let msgType = "message"
 let currentParticipants = [];
+let chatHistory = [];
+
+
+function updateHistory(msg) {
+    if(chatHistory.length === 100)
+        chatHistory.pop()
+    chatHistory.unshift(msg)
+}
 
 function writeChatMsg(msgData) {
     const msgBox = document.querySelector(".message-area")
@@ -34,26 +43,36 @@ function writeChatMsg(msgData) {
             msgBox.firstElementChild.scrollIntoView()
             break;
         case "private_message":
-            if(msgData.to === currentUser.name) {
+            if(msgData.to === currentUser.name || msgData.from === currentUser.name) {
                 msgBox.innerHTML += `
                 <div class="private messages">
                     <span class="system">(${msgData.time})&nbsp;</span>
                     <span class="user-context">${msgData.from}&nbsp;</span>
-                    <span>para</span>
+                    <span>para&nbsp;</span>
                     <span class="user-context">${msgData.to}:&nbsp;</span>
                     <span class="msg-data">${msgData.text}</span>
                 </div>`
                 msgBox.firstElementChild.scrollIntoView()    
             }
             break;
-    }        
+    }
+    updateHistory(msgData)
+}
+
+function lastMsgIndex(item, index) {
+    if(item.name === chatHistory[0].name && item.time === chatHistory[0].time)
+        return index
 }
 
 function loadChat(chatLog) {
     console.log(chatLog)
     document.querySelector(".message-area").innerHTML = ""
+    let index = 0;
     const history = chatLog.data.reverse()
-    history.forEach(writeChatMsg)
+    if(chatHistory.length) {
+        index = history.findIndex(lastMsgIndex)
+    }
+    history.forEach(writeChatMsg, index ? (index-1) : 0)
 }
 
 function updateChat() {
@@ -70,7 +89,7 @@ function sendMessage(btn) {
             from: currentUser.name,
             to: targetUser,
             text: msgContent,
-            type: "message"
+            type: msgType
         }
         const promise = axios.post(API_URL+"messages", msgBody)
         btn.parentNode.querySelector("input").value = ""
@@ -79,7 +98,23 @@ function sendMessage(btn) {
     }
 }
 
-function cutBlankSpaces(string) {
+function setMsgTarget(userName) {
+    const infoBox = document.querySelector(".info")
+    console.log(userName)
+    if(userName === "Público") {
+        infoBox.classList.add("hidden")
+        infoBox.innerHTML = "Enviando para todos"
+        msgType = "message"
+    }
+    else {
+        infoBox.classList.remove("hidden")
+        infoBox.innerHTML = `Enviando para ${userName}`
+        msgType = "private_message"
+    }
+    targetUser = userName
+}
+
+function getNameField(string) {
     return string.replace(/\W<?.+>\W+/, "").replace(/\W+$/, "")
 }
 
@@ -91,13 +126,13 @@ function checkBox(content) {
     const checks = content.parentNode.querySelectorAll(".selected")
     checks.forEach(toggleVisibility)
     content.querySelector(".selected").classList.remove("hidden")
-    const userSelected = cutBlankSpaces(content.querySelector("span").innerHTML)
-    console.log(userSelected)
+    const userSelected = getNameField(content.querySelector("span").innerHTML)
     if(userSelected === "Todos") {
         const isPublic = document.querySelector(".visibility").firstElementChild.lastElementChild.querySelector(".hidden")
         if(!isPublic)
             checkBox(document.querySelector(".visibility").firstElementChild)
     }
+    setMsgTarget(userSelected)
 }
 
 function updateSideMenu(userName) {
@@ -160,6 +195,8 @@ function serverHandshake() {
 
 function userLogin() {
     hideIntro()
+    usersOnline()
+    updateChat()
     participantsToken = setInterval(usersOnline, 10000);
     loginToken = setInterval(serverHandshake, 4000);
     chatReqToken = setInterval(updateChat, 3000);
