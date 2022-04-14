@@ -80,7 +80,7 @@ function sendMessage(btn) {
 }
 
 function cutBlankSpaces(string) {
-    return string.replace(/\W+/, "").replace(/\W+$/, "").replace(/<.+>/, "")
+    return string.replace(/\W<?.+>\W+/, "").replace(/\W+$/, "")
 }
 
 function toggleVisibility(item) {
