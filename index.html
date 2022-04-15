@@ -7,20 +7,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="shortcut icon" href="https://emojiapi.dev/api/v1/loudly_crying_face/32.png" type="image/x-icon">
-    <title>Chat da UOH</title>
+    <link rel="shortcut icon" href="./images/icon_uol.png" type="image/x-icon">
+    <title>Aquele Chato da UOL</title>
 </head>
 
 <body>
     <main>
         <div class="header">
-            <img onclick="closeSideMenu()" src="https://emojiapi.dev/api/v1/loudly_crying_face/32.png" alt="">
-            <ion-icon onclick="showSideMenu()" name="people"></ion-icon>
+            <img src="./images/logo_uol.png" alt="">
+            <ion-icon onclick="sideMenu()" name="people"></ion-icon>
         </div>
         <div class="intro-screen">
-            <img onclick="hideIntro()" src="https://emojiapi.dev/api/v1/loudly_crying_face/32.png" alt="">
+            <img onclick="hideIntro()" src="./images/logo_uol.png" alt="">
             <input type="text" placeholder="Digite seu nome">
-            <div onclick="registerUser(this)">Entrar</div>
+            <div class="login-btn" onclick="registerUser(this)">Entrar</div>
+            <div class="loading hidden">
+                <img class="load" src="./images/load-icon-png-7963.png" alt="">
+                <span>Entrando...</span>
+            </div>
         </div>
         <div class="side-menu hidden">
             <h3>Escolha um contato para mandar mensagem</h3>
@@ -51,6 +55,7 @@
                 </li>
             </ul>
         </div>
+        <div onclick="sideMenu()" class="shadow hidden"></div>
         <div class="message-area">
         </div>
         <div class="bottom">

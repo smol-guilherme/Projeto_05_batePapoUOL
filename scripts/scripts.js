@@ -200,6 +200,7 @@ function registerUser(btn) {
         const nameReq = {
             name: userName
         }
+        hideLogin()
         console.log(nameReq)
         const promise = axios.post(API_URL+"participants", nameReq)
         currentUser.name = nameReq.name
@@ -223,15 +224,11 @@ function userLogin() {
     chatReqToken = setInterval(updateChat, 3000);
 }
 
-function closeSideMenu() {
-    const sideMenu = document.querySelector(".side-menu")
-    sideMenu.classList.add("hidden")
-}
-
-function showSideMenu() {
-    console.log('side-menu')
+function sideMenu() {
     const sideMenu = document.querySelector(".side-menu")
     sideMenu.classList.toggle("hidden")
+    const shadow = document.querySelector(".shadow")
+    shadow.classList.toggle("hidden")
 }
 
 function hideIntro() {
@@ -239,9 +236,11 @@ function hideIntro() {
     introMenu.classList.add("hidden")
 }
 
-function showIntro() {
+function hideLogin() {
     const introMenu = document.querySelector(".intro-screen")
-    introMenu.classList.remove("hidden")
+    introMenu.querySelector("div").classList.add("hidden")
+    introMenu.querySelector("input").classList.add("hidden")
+    introMenu.querySelector(".loading").classList.remove("hidden")
 }
 
 function errorHandle(code) {
@@ -256,38 +255,6 @@ function errorHandle(code) {
             console.log(errorCode, code.response)
             alert("Aconteceu um erro!\nVoltando ao menu inicial...")
             break;
-        // case 498:
-        //     console.log(errorCode, code.response)
-        //     alert("Login expirado, faça um novo login")
-        //     break;
-        // case 500:
-        //     console.log(errorCode, code.response)
-        //     alert("Erro ao acessar o servidor, tente novamente mais tarde.")
-        //     break;
-        // case 502:
-        //     console.log(errorCode, code.response)
-        //     alert("Erro ao acessar o servidor, tente novamente mais tarde.")
-        //     break;
-        // case 503:
-        //     console.log(errorCode, code.response)
-        //     alert("Serviço indisponível, tente novamente mais tarde.")
-        //     break;
-        // case 504:
-        //     console.log(errorCode, code.response)
-        //     alert("Timeout.")
-        //     break;
-        // case 521:
-        //     console.log(errorCode, code.response)
-        //     alert("Erro ao acessar o servidor, tente novamente mais tarde.")
-        //     break;
-        // case 523:
-        //     console.log(errorCode, code.response)
-        //     alert("Erro ao acessar o servidor, tente novamente mais tarde.")
-        //     break;
-        // case 599:
-        //     console.log(errorCode, code.response)
-        //     alert("Erro ao acessar o servidor, tente novamente mais tarde.")
-        //     break;
         default:
             alert("Erro desconhecido")
             break;
