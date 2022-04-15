@@ -11,9 +11,17 @@ let currentParticipants = [];
 let chatHistory = [];
 
 
+function deleteOlder() {
+    const msgBox = document.querySelector(".message-area")
+    console.log("deleting\n"+msgBox.lastElementChild)
+    msgBox.lastElementChild.remove()
+}
+
 function updateHistory(msg) {
-    if(chatHistory.length === 100)
+    if(chatHistory.length === 100) {
+        // deleteOlder()
         chatHistory.pop()
+    }
     chatHistory.unshift(msg)
 }
 
@@ -66,12 +74,12 @@ function lastMsgIndex(item, index) {
 
 function loadChat(chatLog) {
     console.log(chatLog)
-    document.querySelector(".message-area").innerHTML = ""
-    let index = 0;
+    let index;
     const history = chatLog.data.reverse()
     if(chatHistory.length) {
         index = history.findIndex(lastMsgIndex)
     }
+    console.log("calling write at index " + index)
     history.forEach(writeChatMsg, index ? (index-1) : 0)
 }
 
@@ -98,10 +106,23 @@ function sendMessage(btn) {
     }
 }
 
+function keyCheck(keyEvent) {
+    const btn = keyEvent.path[0]
+    if(keyEvent.key === "Enter") {
+        sendMessage(btn)
+    }
+}
+
+function notAUser(data) {
+    if(data === "Público" || data === "Reservadamente" || data === "Todos")
+        return true;
+    return false;
+}
+
 function setMsgTarget(userName) {
     const infoBox = document.querySelector(".info")
     console.log(userName)
-    if(userName === "Público") {
+    if(notAUser(userName)) {
         infoBox.classList.add("hidden")
         infoBox.innerHTML = "Enviando para todos"
         msgType = "message"
