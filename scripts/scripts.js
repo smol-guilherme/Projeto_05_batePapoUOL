@@ -9,58 +9,65 @@ let targetUser = "Todos";
 let msgType = "message"
 let currentParticipants = [];
 let chatHistory = [];
+const MAX_LOG = 100;
 
 
 function deleteOlder() {
-    const msgBox = document.querySelector(".message-area")
-    console.log("deleting\n"+msgBox.lastElementChild)
-    msgBox.lastElementChild.remove()
+    document.querySelector(".message-area").firstElementChild.remove()
+}
+
+function sameAsPrevious(msg) {
+    const lastHistory = chatHistory[chatHistory.length-1]
+    if(lastHistory.name === msg.name && lastHistory.time === msg.time)
+        return true
+    return false
 }
 
 function updateHistory(msg) {
-    if(chatHistory.length === 100) {
-        // deleteOlder()
-        chatHistory.pop()
+    if(chatHistory.length === MAX_LOG) {
+        chatHistory.shift()
+        deleteOlder()
     }
-    chatHistory.unshift(msg)
+    if(chatHistory.length === 0 || !sameAsPrevious(msg))
+        chatHistory.push(msg)
 }
 
 function writeChatMsg(msgData) {
     const msgBox = document.querySelector(".message-area")
-    const msgCat = msgData.type
+    let msgCat = msgData.type;
 
     switch (msgCat) {
         case "message":
             msgBox.innerHTML += `
-            <div class="global messages">
-                <span class="system">(${msgData.time})&nbsp;</span>
-                <span class="user-context">${msgData.from}&nbsp;</span>
-                <span>para&nbsp;</span>
-                <span class="user-context">${msgData.to}:&nbsp;</span>
-                <span class="msg-data">${msgData.text}</span>
-            </div>`
-            msgBox.firstElementChild.scrollIntoView()
-            break;
-        case "status":
-            msgBox.innerHTML += `
-            <div class="system messages">
-                <span class="system">(${msgData.time})&nbsp</span>
-                <span class="user-context">${msgData.from}&nbsp</span>
-                <span>${msgData.text}</span>
-            </div>`
-            msgBox.firstElementChild.scrollIntoView()
-            break;
-        case "private_message":
-            if(msgData.to === currentUser.name || msgData.from === currentUser.name) {
-                msgBox.innerHTML += `
-                <div class="private messages">
+                <div class="global messages">
                     <span class="system">(${msgData.time})&nbsp;</span>
                     <span class="user-context">${msgData.from}&nbsp;</span>
                     <span>para&nbsp;</span>
                     <span class="user-context">${msgData.to}:&nbsp;</span>
                     <span class="msg-data">${msgData.text}</span>
                 </div>`
-                msgBox.firstElementChild.scrollIntoView()    
+            msgBox.lastElementChild.scrollIntoView()
+            break;
+        case "status":
+            msgBox.innerHTML += `
+                <div class="system messages">
+                    <span class="system">(${msgData.time})&nbsp</span>
+                    <span class="user-context">${msgData.from}&nbsp</span>
+                    <span>${msgData.text}</span>
+                </div>`
+            msgBox.lastElementChild.scrollIntoView()
+            break;
+        case "private_message":
+            if (msgData.to === currentUser.name || msgData.from === currentUser.name) {
+                msgBox.innerHTML += `
+                    <div class="private messages">
+                        <span class="system">(${msgData.time})&nbsp;</span>
+                        <span class="user-context">${msgData.from}&nbsp;</span>
+                        <span>para&nbsp;</span>
+                        <span class="user-context">${msgData.to}:&nbsp;</span>
+                        <span class="msg-data">${msgData.text}</span>
+                    </div>`
+                msgBox.lastElementChild.scrollIntoView()
             }
             break;
     }
@@ -68,19 +75,20 @@ function writeChatMsg(msgData) {
 }
 
 function lastMsgIndex(item, index) {
-    if(item.name === chatHistory[0].name && item.time === chatHistory[0].time)
+    const lastIndex = chatHistory.length-1
+    // console.log(chatHistory,"\n",index,"\n",item,"\n",lastIndex)
+    if(item.name === chatHistory[lastIndex].name && item.time === chatHistory[lastIndex].time)
         return index
 }
 
 function loadChat(chatLog) {
-    console.log(chatLog)
-    let index;
-    const history = chatLog.data.reverse()
-    if(chatHistory.length) {
-        index = history.findIndex(lastMsgIndex)
-    }
-    console.log("calling write at index " + index)
-    history.forEach(writeChatMsg, index ? (index-1) : 0)
+    const chatData = chatLog.data
+    if(chatHistory.length === 0)
+        chatData.forEach(writeChatMsg)
+    const newIndex = chatData.findIndex(lastMsgIndex)
+    const updateArray = chatData.slice(newIndex+1)
+    console.log(updateArray)
+    updateArray.forEach(writeChatMsg)
 }
 
 function updateChat() {
@@ -178,7 +186,7 @@ function updateUsersOnline(usersList) {
     currentParticipants = usersList.data.filter(removeUser)
     document.querySelector(".users").innerHTML = 
     `
-    <li onclick="selectUser(this)">
+    <li onclick="checkBox(this)">
         <span>
             <ion-icon name="person-circle"></ion-icon>
             Todos
@@ -218,7 +226,6 @@ function serverHandshake() {
 function userLogin() {
     hideIntro()
     usersOnline()
-    updateChat()
     participantsToken = setInterval(usersOnline, 10000);
     loginToken = setInterval(serverHandshake, 4000);
     chatReqToken = setInterval(updateChat, 3000);
