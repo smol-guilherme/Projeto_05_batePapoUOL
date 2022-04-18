@@ -43,7 +43,6 @@ input {
 .header img {
     height: 45px;
     width: 63px;
-    width: fit-content;
 }
 
 .intro-screen {
