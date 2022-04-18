@@ -13,24 +13,27 @@ const MAX_LOG = 100;
 
 
 function deleteOlder() {
-    document.querySelector(".message-area").firstElementChild.remove()
+    const loadedMsg = document.querySelector(".message-area")
+    if(loadedMsg.childElementCount >= MAX_LOG)
+        loadedMsg.firstElementChild.remove()
 }
 
 function sameAsPrevious(msg) {
     const lastHistory = chatHistory[chatHistory.length-1]
-    console.log(chatHistory, chatHistory.length)
     if(lastHistory.name === msg.name && lastHistory.time === msg.time)
         return true
     return false
 }
 
 function updateHistory(msg) {
-    if(chatHistory.length === MAX_LOG) {
-        chatHistory.shift()
-        deleteOlder()
-    }
     if(chatHistory.length === 0 || !sameAsPrevious(msg))
-        chatHistory.push(msg)
+    {
+        const deleteFlag = chatHistory.push(msg)
+        if(deleteFlag >= MAX_LOG) {
+            chatHistory.shift()
+        }
+    }
+    deleteOlder()
 }
 
 function writeChatMsg(msgData) {
@@ -45,7 +48,7 @@ function writeChatMsg(msgData) {
                     <span class="user-context">${msgData.from}&nbsp;</span>
                     <span>para&nbsp;</span>
                     <span class="user-context">${msgData.to}:&nbsp;</span>
-                    <span class="msg-data">${msgData.text}</span>
+                    <div class="msg-data">${msgData.text}</div>
                 </div>`
             msgBox.lastElementChild.scrollIntoView()
             break;
@@ -54,7 +57,7 @@ function writeChatMsg(msgData) {
                 <div class="system messages">
                     <span class="system">(${msgData.time})&nbsp</span>
                     <span class="user-context">${msgData.from}&nbsp</span>
-                    <span>${msgData.text}</span>
+                    <div class="msg-data">${msgData.text}</div>
                 </div>`
             msgBox.lastElementChild.scrollIntoView()
             break;
@@ -66,7 +69,7 @@ function writeChatMsg(msgData) {
                         <span class="user-context">${msgData.from}&nbsp;</span>
                         <span>para&nbsp;</span>
                         <span class="user-context">${msgData.to}:&nbsp;</span>
-                        <span class="msg-data">${msgData.text}</span>
+                        <div class="msg-data">${msgData.text}</div>
                     </div>`
                 msgBox.lastElementChild.scrollIntoView()
             }
@@ -106,7 +109,7 @@ function sendMessage(btn) {
             text: msgContent,
             type: msgType
         }
-        console.log(msgBody);
+        // console.log(msgBody);
         const promise = axios.post(API_URL+"messages", msgBody);
         btn.parentNode.querySelector("input").value = "";
         promise.then(updateChat);
@@ -131,7 +134,6 @@ function setMsgTarget(userName) {
     targetUser = userName
     if(isUser(userName)) {
         setMsgVisibility(false)
-        return;
     }
     changeIfPrivate()
 }
@@ -139,7 +141,7 @@ function setMsgTarget(userName) {
 function changeIfPrivate() {
     const setting = document.querySelector(".visibility .hidden").parentNode
     const settingName = getNameField(setting.querySelector("span").innerHTML)
-    console.log(settingName)
+    // console.log(settingName)
     if (settingName === "Público") {
         setting.lastElementChild.classList.remove("hidden")
         setting.nextElementSibling.lastElementChild.classList.add("hidden")
