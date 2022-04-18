@@ -13,6 +13,9 @@ main {
 
 span {
     display: flex;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 input {
@@ -109,9 +112,12 @@ input {
     font-size: 18px;
     padding: 8px;
     margin: 3px 0;
-    height: 60px;
+    min-height: 80px;
     width: 100vw;
     box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .system {
@@ -174,13 +180,8 @@ input {
 }
 
 .side-menu ul * {
-    display: flex;
     align-items: center;
     font-size: 14px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-
 }
 
 .side-menu .users {
@@ -189,6 +190,7 @@ input {
 }
 
 .side-menu li {
+    display: flex;
     justify-content: space-between;
     padding: 4px 15px;
     text-align: start;
@@ -197,10 +199,19 @@ input {
 .side-menu ion-icon {
     font-size: 28px;
     text-align: center;
+    min-width: 28px;
+    min-height: 28px;
+}
+
+.side-menu span {
+    display: flex;
+    flex: 1;
 }
 
 .side-menu .selected {
     font-size: 18px;
+    min-width: 18px;
+    max-height: 18px;
     color: #28bb25;
 }
 
@@ -243,7 +254,6 @@ input {
 .loading {
     display: flex;
     flex-direction: column;
-    
 }
 
 .load {

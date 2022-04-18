@@ -18,6 +18,7 @@ function deleteOlder() {
 
 function sameAsPrevious(msg) {
     const lastHistory = chatHistory[chatHistory.length-1]
+    console.log(chatHistory, chatHistory.length)
     if(lastHistory.name === msg.name && lastHistory.time === msg.time)
         return true
     return false
@@ -76,7 +77,6 @@ function writeChatMsg(msgData) {
 
 function lastMsgIndex(item, index) {
     const lastIndex = chatHistory.length-1
-    // console.log(chatHistory,"\n",index,"\n",item,"\n",lastIndex)
     if(item.name === chatHistory[lastIndex].name && item.time === chatHistory[lastIndex].time)
         return index
 }
@@ -87,7 +87,6 @@ function loadChat(chatLog) {
         chatData.forEach(writeChatMsg)
     const newIndex = chatData.findIndex(lastMsgIndex)
     const updateArray = chatData.slice(newIndex+1)
-    console.log(updateArray)
     updateArray.forEach(writeChatMsg)
 }
 
@@ -107,10 +106,11 @@ function sendMessage(btn) {
             text: msgContent,
             type: msgType
         }
-        const promise = axios.post(API_URL+"messages", msgBody)
-        btn.parentNode.querySelector("input").value = ""
-        promise.then(updateChat)
-        promise.catch(errorHandle)
+        console.log(msgBody);
+        const promise = axios.post(API_URL+"messages", msgBody);
+        btn.parentNode.querySelector("input").value = "";
+        promise.then(updateChat);
+        promise.catch(errorHandle);
     }
 }
 
@@ -121,26 +121,43 @@ function keyCheck(keyEvent) {
     }
 }
 
-function notAUser(data) {
-    if(data === "Público" || data === "Reservadamente" || data === "Todos")
-        return true;
-    return false;
+function isUser(data) {
+    if(data === "Todos")
+        return false;
+    return true;
 }
 
 function setMsgTarget(userName) {
-    const infoBox = document.querySelector(".info")
-    console.log(userName)
-    if(notAUser(userName)) {
-        infoBox.classList.add("hidden")
-        infoBox.innerHTML = "Enviando para todos"
-        msgType = "message"
-    }
-    else {
-        infoBox.classList.remove("hidden")
-        infoBox.innerHTML = `Enviando para ${userName}`
-        msgType = "private_message"
-    }
     targetUser = userName
+    if(isUser(userName)) {
+        setMsgVisibility(false)
+        return;
+    }
+    changeIfPrivate()
+}
+
+function changeIfPrivate() {
+    const setting = document.querySelector(".visibility .hidden").parentNode
+    const settingName = getNameField(setting.querySelector("span").innerHTML)
+    console.log(settingName)
+    if (settingName === "Público") {
+        setting.lastElementChild.classList.remove("hidden")
+        setting.nextElementSibling.lastElementChild.classList.add("hidden")
+    }
+}
+
+function setMsgVisibility(isPrivate) {
+    const infoBox = document.querySelector(".info")
+    if(isPrivate) {
+        infoBox.classList.remove("hidden");
+        msgType = "private_message";
+        infoBox.innerHTML = 
+        `Enviando reservadamente para ${(targetUser !== "Todos") ? targetUser : "..."}`;
+        return;
+    }
+    infoBox.classList.add("hidden");
+    msgType = "message";
+    infoBox.innerHTML = "Enviando para todos";
 }
 
 function getNameField(string) {
@@ -152,16 +169,20 @@ function toggleVisibility(item) {
 }
 
 function checkBox(content) {
-    const checks = content.parentNode.querySelectorAll(".selected")
-    checks.forEach(toggleVisibility)
-    content.querySelector(".selected").classList.remove("hidden")
-    const userSelected = getNameField(content.querySelector("span").innerHTML)
-    if(userSelected === "Todos") {
-        const isPublic = document.querySelector(".visibility").firstElementChild.lastElementChild.querySelector(".hidden")
-        if(!isPublic)
-            checkBox(document.querySelector(".visibility").firstElementChild)
+    const checks = content.parentNode;
+    checks.querySelectorAll(".selected").forEach(toggleVisibility);
+    content.querySelector(".selected").classList.remove("hidden");
+    const userSelection = getNameField(content.querySelector("span").innerHTML);
+    
+    if (checks.className === "visibility") {
+        if (userSelection === "Público") {
+            setMsgVisibility(false)
+            return;
+        }
+        setMsgVisibility(true)
+        return;
     }
-    setMsgTarget(userSelected)
+    setMsgTarget(userSelection);
 }
 
 function updateSideMenu(userName) {
@@ -204,7 +225,12 @@ function usersOnline() {
 
 function registerUser(btn) {
     const userName = btn.parentNode.querySelector("input").value
-    if(userName) {
+    if(userName !== "") {
+        btn.parentNode.querySelector("input").value = ""
+        if(userName.length > 128) {
+            alert("Nome muito longo, escolha um nome com menos carateres")
+            return;
+        }
         const nameReq = {
             name: userName
         }
@@ -219,7 +245,6 @@ function registerUser(btn) {
 
 function serverHandshake() {
     const promise = axios.post(API_URL+"status", currentUser)
-    promise.then(console.log('ok'))
     promise.catch(errorHandle)
 }
 
@@ -260,7 +285,7 @@ function errorHandle(code) {
     switch (errorCode) {
         case 400:
             console.log(errorCode, code.response)
-            alert("Aconteceu um erro!\nVoltando ao menu inicial...")
+            alert("Nome de usuário já existe. Por favor escolha outro nome");
             break;
         default:
             alert("Erro desconhecido")
